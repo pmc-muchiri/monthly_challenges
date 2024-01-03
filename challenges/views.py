@@ -18,6 +18,22 @@ monthly_challenges = {"january": "eat no meat for the entire month",
 # Create your views here.
 
 
+def index(request):
+
+    list_items = ""
+    months = list(monthly_challenges.keys())
+    
+    for month in months:
+        capitalize_month = month.capitalize()
+        month_path = reverse("month-challenge", args=[month])
+        list_items += f"<li><a href=\"{month_path}\">{capitalize_month}</a></li>"
+
+    response_data = f"<ul>{list_items}</ul>"
+    return HttpResponse(response_data)
+
+    return HttpResponse()
+
+
 def monthly_challenge_by_number(request, month):
     months = list(monthly_challenges.keys())
 
@@ -34,7 +50,8 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challeng_text = monthly_challenges[month.lower()]
+
+        response_data = f"<h1>{challeng_text}<h1>"
+        return HttpResponse(response_data)
     except:
         return HttpResponseNotFound("This is not supported")
-
-    return HttpResponse(challeng_text)
